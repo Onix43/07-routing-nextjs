@@ -7,12 +7,16 @@ import NoteList from "@/components/NoteList/NoteList";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Pagination from "@/components/Pagination/Pagination";
 import Modal from "@/components/Modal/Modal";
-import type { Note } from "../../types/note";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import { useDebouncedCallback } from "use-debounce";
 import NoteForm from "@/components/NoteForm/NoteForm";
+import { Note } from "@/types/note";
 
-function NotesClient() {
+type Props = {
+  params: string | undefined;
+};
+
+function NotesClient({ params }: Props) {
   const queryClient = useQueryClient();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -21,7 +25,7 @@ function NotesClient() {
 
   const { data } = useQuery({
     queryKey: ["notes", currentPage, query],
-    queryFn: () => fetchNotes(query, currentPage),
+    queryFn: () => fetchNotes(query, currentPage, params),
     refetchOnMount: false,
   });
 

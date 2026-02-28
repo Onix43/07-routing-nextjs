@@ -19,9 +19,10 @@ axios.defaults.baseURL = baseUrl;
 export async function fetchNotes(
   search?: string,
   page?: number,
+  tag?: string,
 ): Promise<FetchNotesResponse> {
   const response = await axios.get<FetchNotesResponse>("/notes", {
-    params: { search, page, perPage: 12 },
+    params: { search, page, tag, perPage: 12 },
     method: "GET",
     ...noteOptions,
   });
