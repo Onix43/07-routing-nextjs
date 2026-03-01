@@ -1,21 +1,16 @@
 import css from "./NoteForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
-import type { Note, NoteTag } from "../../types/note";
+import type { CreateNoteValues } from "../../types/note";
 
-interface NoteFormValues {
-  title: string;
-  content: string;
-  tag: NoteTag;
-}
-const initialValues: NoteFormValues = {
+const initialValues: CreateNoteValues = {
   title: "",
   content: "",
   tag: "Todo",
 };
 
 interface NoteFormProps {
-  handleNoteCreation: (note: Note) => void;
+  handleNoteCreation: (note: CreateNoteValues) => void;
   onClose: () => void;
 }
 
@@ -33,8 +28,8 @@ export default function NoteForm({
   onClose,
 }: NoteFormProps) {
   const handleSubmit = (
-    values: NoteFormValues,
-    actions: FormikHelpers<NoteFormValues>,
+    values: CreateNoteValues,
+    actions: FormikHelpers<CreateNoteValues>,
   ) => {
     handleNoteCreation(values);
     actions.resetForm();

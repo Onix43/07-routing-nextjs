@@ -10,7 +10,7 @@ import Modal from "@/components/Modal/Modal";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import { useDebouncedCallback } from "use-debounce";
 import NoteForm from "@/components/NoteForm/NoteForm";
-import { Note } from "@/types/note";
+import { CreateNoteValues, Note } from "@/types/note";
 
 type Props = {
   params: string | undefined;
@@ -30,7 +30,7 @@ function NotesClient({ params }: Props) {
   });
 
   const mutation = useMutation({
-    mutationFn: (newNote: Note) => createNote(newNote),
+    mutationFn: (newNote: CreateNoteValues) => createNote(newNote),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       setModalIsOpen(false);
@@ -55,7 +55,7 @@ function NotesClient({ params }: Props) {
     deleteMutation.mutate(noteId);
   };
 
-  const handleMutation = (note: Note) => {
+  const handleMutation = (note: CreateNoteValues) => {
     mutation.mutate(note);
   };
 
