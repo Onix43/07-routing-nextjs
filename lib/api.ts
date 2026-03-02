@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { CreateNoteValues, Note } from "../types/note";
+import type { CreateNoteValues, Note, NoteTag } from "../types/note";
 
 interface FetchNotesResponse {
   notes: Note[];
@@ -19,38 +19,28 @@ axios.defaults.baseURL = baseUrl;
 export async function fetchNotes(
   search?: string,
   page?: number,
-  tag?: string,
+  tag?: NoteTag,
 ): Promise<FetchNotesResponse> {
   const response = await axios.get<FetchNotesResponse>("/notes", {
     params: { search, page, tag, perPage: 12 },
-    method: "GET",
     ...noteOptions,
   });
   return response.data;
 }
 
 export async function fetchNoteById(id: string): Promise<Note> {
-  const response = await axios.get(`/notes/${id}`, {
+  const response = await axios.get<Note>(`/notes/${id}`, {
     ...noteOptions,
   });
   return response.data;
 }
 
-export async function createNote(
-  note: CreateNoteValues,
-): Promise<FetchNotesResponse> {
-  const response = await axios.post<FetchNotesResponse>(
-    "/notes",
-    note,
-    noteOptions,
-  );
+export async function createNote(note: CreateNoteValues): Promise<Note> {
+  const response = await axios.post<Note>("/notes", note, noteOptions);
   return response.data;
 }
 
-export async function deleteNote(noteId: string): Promise<FetchNotesResponse> {
-  const response = await axios.delete<FetchNotesResponse>(
-    `/notes/${noteId}`,
-    noteOptions,
-  );
+export async function deleteNote(noteId: string): Promise<Note> {
+  const response = await axios.delete<Note>(`/notes/${noteId}`, noteOptions);
   return response.data;
 }
